@@ -29,4 +29,21 @@ extension UIViewController {
         
         dismiss(animated: false, completion: nil) ////false because a custom transition is setted
     }
+    
+    func saveGoal(_ description: String, type: String, completionValue: Int32, progress: Int32, completion: (_ goalCreated: Goal?, _ finished: Bool) -> ()) {
+        guard let manageContext = appDelegate?.persistentContainer.viewContext else { return }
+        let goal = Goal(context: manageContext)
+        goal.goalDescription = description
+        goal.goalType = type
+        goal.goalCompletionValue = completionValue
+        goal.goalProgress = progress
+        
+        do {
+            try manageContext.save()
+            completion(goal, true)
+        } catch {
+            debugPrint("Could not save: \(error.localizedDescription)")
+            completion(nil, false)
+        }
+    }
 }

@@ -17,6 +17,13 @@ class GoalsVC: UIViewController {
     var goals: [Goal] = []
     var snackBarTimer: Timer!
     var currentGoal: Goal?
+    var undoAction: UndoAction?
+    
+    //auxData for undo delete
+    var auxDescription:String?
+    var auxType: String?
+    var auxCompletionValue: Int32 = 0
+    var auxProgress: Int32 = 0
     
     
     override func viewDidLoad() {
@@ -32,9 +39,10 @@ class GoalsVC: UIViewController {
         fetchData()
         mTableView.reloadData()
         
+        //this is called when is presented again after the creation of new goal
         currentGoal = GoalCreatedManager.shared.getGoal()
-
         if currentGoal != nil {
+            undoAction = .create
             GoalCreatedManager.shared.setGoal(nil)
             startTimer()
         }
@@ -42,6 +50,13 @@ class GoalsVC: UIViewController {
     
     func startTimer() {
         self.undoView.isHidden = false
+        switch undoAction {
+        case .create:
+            self.undoLabel.text = "Goal created"
+        case .delete:
+            self.undoLabel.text = "Goal deleted"
+        default: break
+        }
         snackBarTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false, block: { (_) in
             self.undoView.isHidden = true
         })
@@ -70,12 +85,30 @@ class GoalsVC: UIViewController {
     }
     
     @IBAction func undoWasPressed(_ sender: Any) {
-        if currentGoal != nil {
-            remove(currentGoal!)
-            fetchData()
-            stopTimer()
-            mTableView.reloadData()
+        switch undoAction {
+        case .create:
+            if currentGoal != nil {
+                remove(currentGoal!)
+                self.refreshTableView()
+            }
+        case .delete:
+            //create again the goal
+            if auxDescription != nil && auxType != nil {
+                self.saveGoal(auxDescription!, type: auxType!, completionValue: auxCompletionValue, progress: auxProgress) { (_, complete) in
+                    if complete {
+                        self.refreshTableView()
+                    }
+                }
+            }
+        default: break
         }
+        
+    }
+    
+    func refreshTableView() {
+        fetchData()
+        stopTimer()
+        mTableView.reloadData()
     }
 }
 
@@ -103,10 +136,17 @@ extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "DELETE") { (conextualAction, viewParam, boolValue) in
+            let aux = self.goals[indexPath.row]
+            //this is needed because the var is passed by reference and cause NPE
+            self.auxDescription = aux.goalDescription
+            self.auxType = aux.goalType
+            self.auxCompletionValue = aux.goalCompletionValue
+            self.auxProgress = aux.goalProgress
             self.remove(atIndexPath: indexPath)
             self.fetchData()
             self.mTableView.deleteRows(at: [indexPath], with: .automatic)
-            
+            self.undoAction = .delete
+            self.startTimer()
         }
         deleteAction.backgroundColor = #colorLiteral(red: 0.9921568627, green: 0.368627451, blue: 0.3254901961, alpha: 1)
         

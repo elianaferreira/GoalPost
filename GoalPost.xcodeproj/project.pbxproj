@@ -22,6 +22,7 @@
 		16809A46257459F4005BE42E /* GoalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16809A45257459F4005BE42E /* GoalType.swift */; };
 		16809A482574711A005BE42E /* FinishGoalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16809A472574711A005BE42E /* FinishGoalVC.swift */; };
 		16809A4B2575CC75005BE42E /* GoalCreatedManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16809A4A2575CC75005BE42E /* GoalCreatedManager.swift */; };
+		16809A4D2575DC07005BE42E /* UndoAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16809A4C2575DC07005BE42E /* UndoAction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		16809A45257459F4005BE42E /* GoalType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalType.swift; sourceTree = "<group>"; };
 		16809A472574711A005BE42E /* FinishGoalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishGoalVC.swift; sourceTree = "<group>"; };
 		16809A4A2575CC75005BE42E /* GoalCreatedManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCreatedManager.swift; sourceTree = "<group>"; };
+		16809A4C2575DC07005BE42E /* UndoAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoAction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				16809A45257459F4005BE42E /* GoalType.swift */,
+				16809A4C2575DC07005BE42E /* UndoAction.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 			files = (
 				16809A2525742BA2005BE42E /* GoalsVC.swift in Sources */,
 				16809A3D25744777005BE42E /* CreateGoalVC.swift in Sources */,
+				16809A4D2575DC07005BE42E /* UndoAction.swift in Sources */,
 				16809A2125742BA2005BE42E /* AppDelegate.swift in Sources */,
 				16809A2B25742BA2005BE42E /* GoalPost.xcdatamodeld in Sources */,
 				16809A41257453E1005BE42E /* UIViewExt.swift in Sources */,

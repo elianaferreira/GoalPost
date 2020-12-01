@@ -16,7 +16,6 @@ class FinishGoalVC: UIViewController {
     
     var goalDescription: String!
     var goalType: GoalType!
-    var goalCreated: Goal!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,9 +31,9 @@ class FinishGoalVC: UIViewController {
     @IBAction func createGoal(_ sender: Any) {
         //pass data to CoreData
         if pointsTextField.text != "" {
-            self.save { (complete) in
+            self.saveGoal(goalDescription, type: goalType.rawValue, completionValue: Int32(pointsTextField.text!)!, progress: Int32(0)) { (goalCreated, complete) in
                 if complete {
-                    //seteamos el goal en el singleton
+                    //save goal in Singleton to use in main view
                     GoalCreatedManager.shared.setGoal(goalCreated)
                     self.view.window?.rootViewController?.dismissDetail()
                 }
@@ -45,36 +44,4 @@ class FinishGoalVC: UIViewController {
     @IBAction func goBackPressed(_ sender: Any) {
         dismissDetail()
     }
-    
-    
-    func save(completion: (_ finished: Bool) -> ()) {
-        guard let manageContext = appDelegate?.persistentContainer.viewContext else { return }
-        goalCreated = Goal(context: manageContext)
-        goalCreated.goalDescription = goalDescription
-        goalCreated.goalType = goalType.rawValue
-        goalCreated.goalCompletionValue = Int32(pointsTextField.text!)!
-        goalCreated.goalProgress = Int32(0)
-        
-        do {
-            try manageContext.save()
-            completion(true)
-        } catch {
-            debugPrint("Could not save: \(error.localizedDescription)")
-            completion(false)
-        }
-    }
-    
-    func undoCreate(completion: (_ finished: Bool) -> ()) {
-        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        managedContext.delete(goalCreated)
-        
-        do {
-            try managedContext.save()
-            completion(true)
-        } catch {
-            debugPrint("Could not delete \(error.localizedDescription)")
-            completion(false)
-        }
-    }
-    
 }
