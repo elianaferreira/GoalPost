@@ -11,8 +11,12 @@ import CoreData
 class GoalsVC: UIViewController {
 
     @IBOutlet weak var mTableView: UITableView!
+    @IBOutlet weak var undoView: UIView!
+    @IBOutlet weak var undoLabel: UILabel!
     
     var goals: [Goal] = []
+    var snackBarTimer: Timer!
+    var currentGoal: Goal?
     
     
     override func viewDidLoad() {
@@ -20,12 +24,32 @@ class GoalsVC: UIViewController {
         
         mTableView.delegate = self
         mTableView.dataSource = self
+        undoView.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchData()
         mTableView.reloadData()
+        
+        currentGoal = GoalCreatedManager.shared.getGoal()
+
+        if currentGoal != nil {
+            GoalCreatedManager.shared.setGoal(nil)
+            startTimer()
+        }
+    }
+    
+    func startTimer() {
+        self.undoView.isHidden = false
+        snackBarTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false, block: { (_) in
+            self.undoView.isHidden = true
+        })
+    }
+    
+    func stopTimer() {
+        undoView.isHidden = true
+        snackBarTimer.invalidate()
     }
     
     func fetchData() {
@@ -45,6 +69,14 @@ class GoalsVC: UIViewController {
         presentDetail(createGoalVC)
     }
     
+    @IBAction func undoWasPressed(_ sender: Any) {
+        if currentGoal != nil {
+            remove(currentGoal!)
+            fetchData()
+            stopTimer()
+            mTableView.reloadData()
+        }
+    }
 }
 
 extension GoalsVC: UITableViewDelegate, UITableViewDataSource {
@@ -105,9 +137,13 @@ extension GoalsVC {
     
     
     func remove(atIndexPath indexPath: IndexPath) {
+        remove(goals[indexPath.row])
+    }
+    
+    func remove(_ goal: Goal) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         
-        managedContext.delete(goals[indexPath.row])
+        managedContext.delete(goal)
         
         do {
             try managedContext.save()

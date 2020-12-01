@@ -16,6 +16,7 @@ class FinishGoalVC: UIViewController {
     
     var goalDescription: String!
     var goalType: GoalType!
+    var goalCreated: Goal!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,8 @@ class FinishGoalVC: UIViewController {
         if pointsTextField.text != "" {
             self.save { (complete) in
                 if complete {
+                    //seteamos el goal en el singleton
+                    GoalCreatedManager.shared.setGoal(goalCreated)
                     self.view.window?.rootViewController?.dismissDetail()
                 }
             }
@@ -46,18 +49,30 @@ class FinishGoalVC: UIViewController {
     
     func save(completion: (_ finished: Bool) -> ()) {
         guard let manageContext = appDelegate?.persistentContainer.viewContext else { return }
-        let goal = Goal(context: manageContext)
-        goal.goalDescription = goalDescription
-        goal.goalType = goalType.rawValue
-        goal.goalCompletionValue = Int32(pointsTextField.text!)!
-        goal.goalProgress = Int32(0)
+        goalCreated = Goal(context: manageContext)
+        goalCreated.goalDescription = goalDescription
+        goalCreated.goalType = goalType.rawValue
+        goalCreated.goalCompletionValue = Int32(pointsTextField.text!)!
+        goalCreated.goalProgress = Int32(0)
         
         do {
             try manageContext.save()
-            print(">>> data saved")
             completion(true)
         } catch {
             debugPrint("Could not save: \(error.localizedDescription)")
+            completion(false)
+        }
+    }
+    
+    func undoCreate(completion: (_ finished: Bool) -> ()) {
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        managedContext.delete(goalCreated)
+        
+        do {
+            try managedContext.save()
+            completion(true)
+        } catch {
+            debugPrint("Could not delete \(error.localizedDescription)")
             completion(false)
         }
     }

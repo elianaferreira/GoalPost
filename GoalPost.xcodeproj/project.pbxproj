@@ -21,6 +21,7 @@
 		16809A43257458DB005BE42E /* UIButtonExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16809A42257458DB005BE42E /* UIButtonExt.swift */; };
 		16809A46257459F4005BE42E /* GoalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16809A45257459F4005BE42E /* GoalType.swift */; };
 		16809A482574711A005BE42E /* FinishGoalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16809A472574711A005BE42E /* FinishGoalVC.swift */; };
+		16809A4B2575CC75005BE42E /* GoalCreatedManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16809A4A2575CC75005BE42E /* GoalCreatedManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		16809A42257458DB005BE42E /* UIButtonExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExt.swift; sourceTree = "<group>"; };
 		16809A45257459F4005BE42E /* GoalType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalType.swift; sourceTree = "<group>"; };
 		16809A472574711A005BE42E /* FinishGoalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishGoalVC.swift; sourceTree = "<group>"; };
+		16809A4A2575CC75005BE42E /* GoalCreatedManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCreatedManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 		16809A1F25742BA2005BE42E /* GoalPost */ = {
 			isa = PBXGroup;
 			children = (
+				16809A492575CC52005BE42E /* Class */,
 				16809A44257459E6005BE42E /* Enum */,
 				16809A3925742D7D005BE42E /* View */,
 				16809A3825742CB2005BE42E /* Extension */,
@@ -121,6 +124,14 @@
 				16809A45257459F4005BE42E /* GoalType.swift */,
 			);
 			path = Enum;
+			sourceTree = "<group>";
+		};
+		16809A492575CC52005BE42E /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				16809A4A2575CC75005BE42E /* GoalCreatedManager.swift */,
+			);
+			path = Class;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,6 +213,7 @@
 				16809A3B257438E4005BE42E /* GoalCell.swift in Sources */,
 				16809A46257459F4005BE42E /* GoalType.swift in Sources */,
 				16809A3F25744D6B005BE42E /* UIViewControllerExt.swift in Sources */,
+				16809A4B2575CC75005BE42E /* GoalCreatedManager.swift in Sources */,
 				16809A43257458DB005BE42E /* UIButtonExt.swift in Sources */,
 				16809A2325742BA2005BE42E /* SceneDelegate.swift in Sources */,
 			);
